@@ -9,11 +9,11 @@ You'll discover how to construct dynamic interfaces, control state, put componen
 
 A certain facet of app development is covered in each chapter. Explanations, code samples, and analogies to how you would accomplish the same with React are all included in the chapters. We've included a number of practical projects and tutorials to help you practice the ideas. 
 
-Chapter 1. Essential JavaScript Concepts for React Users
+# Chapter 1. Essential JavaScript Concepts
 
 Review key JavaScript principles before coding. React handles many details automatically. Master these to recreate React behaviors in plain JavaScript.
 
-1.1 Scope and Function Closures
+### 1.1 Scope and Function Closures
 
 Functions act as first-class objects and capture closures. A closure lets an inner function access variables from its outer scope after the outer function completes.
 
@@ -33,7 +33,7 @@ tracker(); // logs 2
 ```
 The update function holds onto total across calls. Closures enable data privacy in plain JS. React's useState hook depends on closures to persist values across renders.
 
-1.2 Asynchronous Execution and Event Loop
+### 1.2 Asynchronous Execution and Event Loop
 
 React effects and callbacks depend on JS async behavior, such as data fetches. Grasp the event loop to manage non-blocking operations.
 
@@ -43,7 +43,7 @@ JS runs on one thread with a call stack for sync code and queues for async tasks
 This keeps the interface responsive during delays. A fetch().then() callback waits for stack clearance before executing. Use this knowledge to prevent state races or invalid DOM changes.
 ​
 
-1.3 Object Inheritance via Prototypes
+### 1.3 Object Inheritance via Prototypes
 
 React relies on objects for props and state. Prototypes drive JS object sharing.
 
@@ -67,7 +67,7 @@ v.move(); // Honda moves forward
 Vehicle.prototype.move supplies the method. Recognize prototypes in library code or custom class designs.
 ​
 
-1.4 Context with this Binding
+### 1.4 Context with this Binding
 
 Functional React components limit this usage. Plain JS DOM code needs it for methods and events.
 
@@ -83,15 +83,15 @@ user.sayHi(); // Hi from Bob
 ```
 Extracted as const hi = user.sayHi; hi(); loses context, setting this to undefined in strict mode. Arrow functions or bind fix this in handlers. DOM events set this to the target element.
 
-1.5 Key Takeaways
+### 1.5 Key Takeaways
 
 Closures, async loop, prototypes, and this underpin UI patterns. Apply them in projects ahead. Reference as you code. Proceed to DOM construction next.
 
-Chapter 2. Direct DOM Control: UIs in Plain JS
+# Chapter 2. Direct DOM Control: UIs in Plain JS
 
 React virtualizes DOM updates. In plain JS, handle creation, changes, and removal yourself. Build dynamic interfaces and sync with data shifts.
 
-2.1 Element Creation and Display
+### 2.1 Element Creation and Display
 
 React JSX compiles to DOM calls. Plain JS uses createElement or innerHTML.
 
@@ -111,7 +111,7 @@ startBtn.setAttribute('aria-label', 'Begin app');
 For trees, chain creates or clone <template> elements. Avoid raw innerHTML with user input to block scripts.
 ​
 
-2.2 Targeted DOM Changes
+### 2.2 Targeted DOM Changes
 
 React diffs virtually then patches. Plain JS targets exact nodes for speed.
 
@@ -134,7 +134,7 @@ scoreNode.textContent = score;
 Alter only text. Batch multiples in DocumentFragment to cut reflows. Use requestAnimationFrame for groups.
 ​
 
-2.3 Event Management
+### 2.3 Event Management
 
 React props like onClick attach handlers. Plain JS uses addEventListener.
 
@@ -153,7 +153,7 @@ root.appendChild(heart);
 
 Closure tracks liked state. Prefer addEventListener over onclick for multiples. Delegate on parents for lists: check event.target.
 
-2.4 Declarative vs Direct Approach
+### 2.4 Declarative vs Direct Approach
 
 React declares UI from state; it updates DOM. Plain JS issues direct commands.
 
