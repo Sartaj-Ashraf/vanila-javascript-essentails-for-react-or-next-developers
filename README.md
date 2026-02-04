@@ -169,3 +169,14 @@ return (
 );
 }
 ```
+
+# Chapter 3. Using Vanilla JavaScript to Manage State
+The core of any dynamic application is state management. React handles state via useState, useReducer, Context, or third-party libraries like Redux/MobX. Without React, state management is still necessary; there isn't a built-in global solution, so you'll have to utilize custom patterns, closures, or plain objects. The good news is that you can create your own light state management system using JavaScript's flexibility.
+ 
+ ### 3.1 What Does "State" Mean Outside of React?
+State, to put it simply, is any data that affects the UI's display, which is subject to change. State can exist in a Vanilla JS application in:
+
+variables or objects in your script module, such as a memory array of to-do lists.
+The DOM itself: DOM properties contain many sorts of state, such as the content of an input field, the checked status of a checkbox input, etc.
+Browser APIs include the URL (which stores state in query parameters or hash) and localStorage, which maintains state throughout page loads.
+In-memory singleton store: To store global state and alert certain areas of your application to update, you may either build a custom object or utilize an ES6 class or closure (much like a Redux store). 
