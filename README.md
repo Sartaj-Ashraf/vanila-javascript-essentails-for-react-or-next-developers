@@ -180,3 +180,48 @@ variables or objects in your script module, such as a memory array of to-do list
 The DOM itself: DOM properties contain many sorts of state, such as the content of an input field, the checked status of a checkbox input, etc.
 Browser APIs include the URL (which stores state in query parameters or hash) and localStorage, which maintains state throughout page loads.
 In-memory singleton store: To store global state and alert certain areas of your application to update, you may either build a custom object or utilize an ES6 class or closure (much like a Redux store). 
+Let's consider a simple global state example. Suppose we want a state object that holds a count and allows components to subscribe to changes:
+````text
+// A simple state store in Vanilla JS
+const appState = (() => {
+  let state = { count: 0 };
+  const listeners = [];
+  return {
+    getState() {
+      return state;
+    },
+    setState(newState) {
+      state = { ...state, ...newState };
+      listeners.forEach(fn => fn(state));
+    },
+    subscribe(fn) {
+      listeners.push(fn);
+      return () => { // return unsubscribe function
+        const index = listeners.indexOf(fn);
+        if (index > -1) listeners.splice(index, 1);
+      };
+    }
+  };
+})();
+```
+This is a very trimmed-down store (inspired by Redux patterns). It uses a closure to hold a private state and listeners. Components can call appState.subscribe(renderFunction) to be notified when state changes, and appState.setState({count: 5}) to update state. For example:
+```text
+// Component A: display count
+const countDisplay = document.createElement('div');
+function renderCount(state) {
+  countDisplay.textContent = `Count: ${state.count}`;
+}
+appState.subscribe(renderCount);
+renderCount(appState.getState());
+appRoot.appendChild(countDisplay);
+
+// Component B: increment button
+const incBtn = document.createElement('button');
+incBtn.textContent = "Increment";
+incBtn.onclick = () => {
+  const current = appState.getState().count;
+  appState.setState({ count: current + 1 });
+};
+appRoot.appendChild(incBtn);
+```
+Now, whenever incBtn is clicked, the state's count is updated and our subscribed render function updates the display. We've essentially mimicked a React useState + re-render in Vanilla JS! This approach uses the observer pattern (listeners). It's rudimentary but works for small apps.
