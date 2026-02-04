@@ -181,7 +181,7 @@ The DOM itself: DOM properties contain many sorts of state, such as the content 
 Browser APIs include the URL (which stores state in query parameters or hash) and localStorage, which maintains state throughout page loads.
 In-memory singleton store: To store global state and alert certain areas of your application to update, you may either build a custom object or utilize an ES6 class or closure (much like a Redux store). 
 Let's consider a simple global state example. Suppose we want a state object that holds a count and allows components to subscribe to changes:
-````text
+```text
 // A simple state store in Vanilla JS
 const appState = (() => {
   let state = { count: 0 };
