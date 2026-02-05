@@ -225,3 +225,15 @@ incBtn.onclick = () => {
 appRoot.appendChild(incBtn);
 ```
 Now, whenever incBtn is clicked, the state's count is updated and our subscribed render function updates the display. We've essentially mimicked a React useState + re-render in Vanilla JS! This approach uses the observer pattern (listeners). It's rudimentary but works for small apps.
+
+
+### 3.2 State Module Pattern and Closures
+One method of encapsulating state is to use closures, such as the IIFE mentioned above. Using an ES module alone is another popular method. You can have a state.js module since each module is a singleton, meaning it is evaluated just once:
+```text
+// state.js
+export const state = {
+  todos: [],
+  filter: 'all'
+};
+```
+The same object will be referenced by any module that imports state. if your code changes state in any way.Other parts notice the difference, too. This is an ad hoc, albeit basic, state container. The lack of an event system to alert you to changes is a drawback. To change the user interface, you may use this in conjunction with manual function calls or custom events (covered next).
