@@ -260,60 +260,54 @@ The document (or any primary component) is treated as an event bus in this metho
 
 A concise guide to choosing the correct source of truth in frontend applications.
 
----
 
-## What Is State
+#####  What Is State
 State represents the current data of an application.  
 Examples include input values, selected filters, and completed tasks.
 
----
 
-## DOM State
+##### DOM State
 The browser already stores some state inside UI elements.
 
-### Examples
+##### Examples
 - `input.value`
 - `checkbox.checked`
 - `select.value`
 
-### When to Use
+##### When to Use
 - Short lived UI interactions
 - Data needed only at the moment of interaction
 
-### Typical Use Cases
+##### Typical Use Cases
 - Search input text
 - Temporary focus state
 - Open or closed dropdowns
 
----
 
-## In Memory State
+##### In Memory State
 State stored in JavaScript objects or variables.  
 This state drives logic and persistence.
 
-### Typical Use Cases
+##### Typical Use Cases
 - Todo items
 - User profile data
 - Form submission payloads
 - Filters affecting multiple components
 
----
-
-## Single Source of Truth
+##### Single Source of Truth
 Each piece of data must have one authoritative source.
 
-### Rule of Thumb
+##### Rule of Thumb
 - Application data lives in memory
 - Ephemeral UI interaction lives in the DOM
 
 Multiple sources without synchronization lead to inconsistent UI and bugs.
 
----
 
-## Syncing DOM and Memory
+##### Syncing DOM and Memory
 Some UI elements reflect stored data.
 
-### Example
+ ##### Example
 Todo checkbox flow:
 1. User clicks the checkbox
 2. JavaScript updates `todo.completed` in memory
@@ -321,9 +315,8 @@ Todo checkbox flow:
 
 Data drives the UI. The UI does not drive the data.
 
----
 
-## Key Takeaways
+##### Key Takeaways
 - Do not treat the DOM as application data storage
 - Avoid duplicating state without sync logic
 - Maintain a clear single source of truth
