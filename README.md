@@ -321,3 +321,22 @@ Data drives the UI. The UI does not drive the data.
 - Avoid duplicating state without sync logic
 - Maintain a clear single source of truth
 
+### 3.5 Persistence and Local Storage
+The ability to access localStorage, sessionStorage, IndexDB, and other resources without the need for other libraries is a significant benefit of writing direct browser code. A straightforward key-value store called localStorage keeps information for the same domain across page loads. Although synchronous, it works well with tiny data sets (5–10MB in most browsers).
+
+To prevent data loss in the event of a user refresh, it is typical practice in Vanilla JS applications to save state to localStorage (e.g. keeping our to-do list saved).
+
+Example: Using localStorage to load and save state:
+```text
+// Save todos array to localStorage
+localStorage.setItem('todos', JSON.stringify(state.todos));
+
+// Later, on page load, initialize state from storage:
+const saved = localStorage.getItem('todos');
+if (saved) {
+  state.todos = JSON.parse(saved);
+  renderTodos();  // update UI to reflect saved todos
+}
+```
+
+This will be incorporated into our to-do app project. It's the Vanilla JS counterpart of accessing an API or utilizing a persistence layer in a React application.
