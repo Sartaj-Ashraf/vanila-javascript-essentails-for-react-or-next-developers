@@ -256,12 +256,75 @@ document.addEventListener('stateChange', e => {
 The document (or any primary component) is treated as an event bus in this method. Although Redux doesn't use DOM events, it's not too dissimilar from how Redux might notify subscribers. Decoupling is advantageous since components can listen for events without importing a particular state module.
 
 ### 3.4 State in Memory vs State in the DOM
-The state you require can occasionally be found in the DOM itself. For example, a text input's value (input's.value) resides in the DOM. That might be considered the wellspring of truth. In other situations, you might wish to synchronize the DOM state with your JavaScript state (e.g., store it to a state.formData object upon input change).
+# State in the DOM vs State in Memory
 
-Selecting the one source of truth is crucial. As a general rule:
+A concise guide to choosing the correct source of truth in frontend applications.
 
-For application data, use in-memory state (objects, etc.) as the source of truth.
-For transient user interface states that don't require long-term storage, like the current value of a search field, which you can always access right away when you need it, use DOM state.
+---
 
-If you have several sources of information, make sure they remain consistent. For instance, updating one should update the other if you have state.filter = 'all' and some <select> with filter options.
-This will occur in projects, such as a to-do list application where the completed property of the task is represented by the checkbox's checked state; both the data and the DOM will be updated simultaneously.
+## What Is State
+State represents the current data of an application.  
+Examples include input values, selected filters, and completed tasks.
+
+---
+
+## DOM State
+The browser already stores some state inside UI elements.
+
+### Examples
+- `input.value`
+- `checkbox.checked`
+- `select.value`
+
+### When to Use
+- Short lived UI interactions
+- Data needed only at the moment of interaction
+
+### Typical Use Cases
+- Search input text
+- Temporary focus state
+- Open or closed dropdowns
+
+---
+
+## In Memory State
+State stored in JavaScript objects or variables.  
+This state drives logic and persistence.
+
+### Typical Use Cases
+- Todo items
+- User profile data
+- Form submission payloads
+- Filters affecting multiple components
+
+---
+
+## Single Source of Truth
+Each piece of data must have one authoritative source.
+
+### Rule of Thumb
+- Application data lives in memory
+- Ephemeral UI interaction lives in the DOM
+
+Multiple sources without synchronization lead to inconsistent UI and bugs.
+
+---
+
+## Syncing DOM and Memory
+Some UI elements reflect stored data.
+
+### Example
+Todo checkbox flow:
+1. User clicks the checkbox
+2. JavaScript updates `todo.completed` in memory
+3. UI renders based on updated data
+
+Data drives the UI. The UI does not drive the data.
+
+---
+
+## Key Takeaways
+- Do not treat the DOM as application data storage
+- Avoid duplicating state without sync logic
+- Maintain a clear single source of truth
+
