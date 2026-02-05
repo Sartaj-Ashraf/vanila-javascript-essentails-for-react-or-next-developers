@@ -256,10 +256,8 @@ document.addEventListener('stateChange', e => {
 The document (or any primary component) is treated as an event bus in this method. Although Redux doesn't use DOM events, it's not too dissimilar from how Redux might notify subscribers. Decoupling is advantageous since components can listen for events without importing a particular state module.
 
 ### 3.4 State in Memory vs State in the DOM
-# State in the DOM vs State in Memory
 
 A concise guide to choosing the correct source of truth in frontend applications.
-
 
 #####  What Is State
 State represents the current data of an application.  
@@ -330,8 +328,10 @@ Example: Using localStorage to load and save state:
 ```text
 // Save todos array to localStorage
 localStorage.setItem('todos', JSON.stringify(state.todos));
+```
 
-// Later, on page load, initialize state from storage:
+ - Later, on page load, initialize state from storage:
+```text
 const saved = localStorage.getItem('todos');
 if (saved) {
   state.todos = JSON.parse(saved);
