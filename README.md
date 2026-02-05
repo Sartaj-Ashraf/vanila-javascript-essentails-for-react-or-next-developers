@@ -237,3 +237,31 @@ export const state = {
 };
 ```
 The same object will be referenced by any module that imports state. if your code changes state in any way.Other parts notice the difference, too. This is an ad hoc, albeit basic, state container. The lack of an event system to alert you to changes is a drawback. To change the user interface, you may use this in conjunction with manual function calls or custom events (covered next).
+
+### 3.3 Managing State Changes with Custom Events
+You can create and dispatch your own events using the CustomEvent constructor that browsers offer. Without a complete pub-sub implementation, this can be a simple method of communicating state changes.
+
+For instance, each time our state changes, we could send out a custom event:
+```text
+// When state changes:
+const event = new CustomEvent('stateChange', { detail: state });
+document.dispatchEvent(event);
+```
+```text
+document.addEventListener('stateChange', e => {
+  const newState = e.detail;
+  // update UI accordingly
+});
+```
+The document (or any primary component) is treated as an event bus in this method. Although Redux doesn't use DOM events, it's not too dissimilar from how Redux might notify subscribers. Decoupling is advantageous since components can listen for events without importing a particular state module.
+
+### 3.4 State in Memory vs State in the DOM
+The state you require can occasionally be found in the DOM itself. For example, a text input's value (input's.value) resides in the DOM. That might be considered the wellspring of truth. In other situations, you might wish to synchronize the DOM state with your JavaScript state (e.g., store it to a state.formData object upon input change).
+
+Selecting the one source of truth is crucial. As a general rule:
+
+For application data, use in-memory state (objects, etc.) as the source of truth.
+For transient user interface states that don't require long-term storage, like the current value of a search field, which you can always access right away when you need it, use DOM state.
+
+If you have several sources of information, make sure they remain consistent. For instance, updating one should update the other if you have state.filter = 'all' and some <select> with filter options.
+This will occur in projects, such as a to-do list application where the completed property of the task is represented by the checkbox's checked state; both the data and the DOM will be updated simultaneously.
