@@ -340,3 +340,35 @@ if (saved) {
 ```
 
 This will be incorporated into our to-do app project. It's the Vanilla JS counterpart of accessing an API or utilizing a persistence layer in a React application.
+
+# Chapter 4. Component Composition and Code Organization
+One reason for React's popularity is the component model – breaking the UI into self-contained, reusable pieces that manage their own state and logic. In Vanilla JS, we don't have a built-in component system, but we can create our own structures and patterns to achieve similar modularity. This chapter explores ways to compose UIs from smaller parts using functions, classes, and web standards.
+Components-Based Thinking (Without a Framework)
+Dividing your user interface into sensible sections is a good idea, even if you don't use React. A to-do app, for instance, may feature a form, a list, and a header. Each chunk can be represented by a function that generates its DOM elements and returns an element or collection of elements.
+
+Vanilla JS Functional Components: You can create a function that yields a DOM node. For example:
+```text
+function createTodoItem(todo) {
+  const li = document.createElement('li');
+  li.textContent = todo.title;
+  if (todo.done) li.classList.add('done');
+  li.addEventListener('click', () => {
+    todo.done = !todo.done;
+    li.classList.toggle('done');
+  });
+  return li;
+}
+```
+This function takes some data (todo) and returns a DOM element (<li>). You could use it like:
+```text
+const list = document.createElement('ul');
+state.todos.forEach(todo => {
+  list.appendChild(createTodoItem(todo));
+});
+```
+
+With internal behavior (toggling done), we have effectively created a Vanilla JS "component" for a to-do list item. It's a building block, but it's not as reliable as a React component (it utilizes the todo object directly and has no lifecycle beyond what we coded).
+
+Composite Components: One component may make use of another. For instance, as shown above, a TodoList component may loop through todos and call createTodoItem for each one. Alternatively, a Header component might generate a <header> element with a title element and possibly some buttons.
+
+You may easily reuse and maintain the focus of each component by creating functions.
