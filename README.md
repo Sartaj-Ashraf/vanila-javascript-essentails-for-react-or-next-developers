@@ -343,7 +343,8 @@ This will be incorporated into our to-do app project. It's the Vanilla JS counte
 
 # Chapter 4. Component Composition and Code Organization
 One reason for React's popularity is the component model – breaking the UI into self-contained, reusable pieces that manage their own state and logic. In Vanilla JS, we don't have a built-in component system, but we can create our own structures and patterns to achieve similar modularity. This chapter explores ways to compose UIs from smaller parts using functions, classes, and web standards.
-Components-Based Thinking (Without a Framework)
+
+### 4.1 Components-Based Thinking (Without a Framework)
 Dividing your user interface into sensible sections is a good idea, even if you don't use React. A to-do app, for instance, may feature a form, a list, and a header. Each chunk can be represented by a function that generates its DOM elements and returns an element or collection of elements.
 
 Vanilla JS Functional Components: You can create a function that yields a DOM node. For example:
