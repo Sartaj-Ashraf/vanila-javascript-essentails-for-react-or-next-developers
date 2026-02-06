@@ -372,3 +372,47 @@ With internal behavior (toggling done), we have effectively created a Vanilla JS
 Composite Components: One component may make use of another. For instance, as shown above, a TodoList component may loop through todos and call createTodoItem for each one. Alternatively, a Header component might generate a <header> element with a title element and possibly some buttons.
 
 You may easily reuse and maintain the focus of each component by creating functions.
+
+### 4.2 Using Classes to Encapsulate Behavior
+
+State, DOM generation, and event handlers can all be conveniently combined in one location with ES6 classes. A class instance can be compared to a component instance.
+For example, let's create a simple Counter component as a class:
+```text
+class CounterComponent {
+  constructor(initialCount = 0) {
+    this.count = initialCount;
+    // Create DOM elements
+    this.el = document.createElement('div');
+    this.display = document.createElement('span');
+    this.display.textContent = this.count;
+    const incBtn = document.createElement('button');
+    incBtn.textContent = '+1';
+    // Append elements
+    this.el.appendChild(this.display);
+    this.el.appendChild(incBtn);
+    // Event handler
+    incBtn.addEventListener('click', () => this.increment());
+  }
+  increment() {
+    this.count++;
+    this.display.textContent = this.count;
+  }
+  mount(parent) {
+    parent.appendChild(this.el);
+  }
+}
+```
+Let's build a basic Counter component as a class, for instance:This class contains the DOM (this.el and children), the counter's state (this.count), and the updating algorithm (increment). The component is connected to a parent using the mount technique. If we wanted to remove it and perform any cleanup, we could also add an unmount function (in this straightforward scenario, removing the DOM node removes the event listener automatically because it is connected to that node).
+Using it:
+```text
+const counter = new CounterComponent(5);
+counter.mount(document.body);
+```
+This class contains the DOM (this.el and children), the counter's state (this.count), and the updating algorithm (increment). The component is connected to a parent using the mount technique. If we wanted to remove it and perform any cleanup, we could also add an unmount function (in this straightforward scenario, removing the DOM node removes the event listener automatically because it is connected to that node).
+
+This method is comparable to writing a component in simple JavaScript or even utilizing light frameworks like Stimulus. It's organized but necessary.
+Advantages: You group related code together. The class can include all of the logic if the component becomes more complicated (for example, a counter with +/- and reset).
+
+Cons: This binding requires caution and is a little verbose; we used an arrow function for the event, which accurately represents this.
+
+Although we won't utilize classes for every component in the book, it's helpful to be aware of this option, particularly for widgets that have a lot of internal state management.
