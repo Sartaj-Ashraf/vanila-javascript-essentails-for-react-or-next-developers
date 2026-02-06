@@ -440,3 +440,18 @@ function renderItem(item) {
 ```
 This yields a DocumentFragment with the item's <li> filled in. Some developers prefer that HTML structure and JS functionality be kept apart through the use of templates. It's similar to JSX in that you use HTML to construct the structure and JS to fill in the data.
 Although templates won't be used extensively in our examples (to keep everything in one location), be mindful of this capability for bigger projects or situations where you need to create a lot of static HTML.
+
+### 4.4 Web Elements (Custom Components)
+A collection of web platform APIs known as "Web Components" are used to create reusable custom elements with encapsulated HTML, styling, and behavior. They are essentially a component system for the browser. You can use your element using a custom tag after defining a class that extends HTMLElement.
+
+A simple illustration of a web component
+```text
+class HelloWorld extends HTMLElement {
+  connectedCallback() {
+    this.textContent = "Hello, World!";
+  }
+}
+customElements.define('hello-world', HelloWorld);
+```
+Now in HTML/JS, you can do <hello-world></hello-world> and it will invoke that class. Web Components can even have their own internal shadow DOM for encapsulated styling.
+Despite their strength, Web Components may be too much for our purposes. They excel at developing cross-framework compatible design systems or UI libraries. 
