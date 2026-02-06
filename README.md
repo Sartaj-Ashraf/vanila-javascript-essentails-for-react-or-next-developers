@@ -455,3 +455,19 @@ customElements.define('hello-world', HelloWorld);
 ```
 Now in HTML/JS, you can do <hello-world></hello-world> and it will invoke that class. Web Components can even have their own internal shadow DOM for encapsulated styling.
 Despite their strength, Web Components may be too much for our purposes. They excel at developing cross-framework compatible design systems or UI libraries. 
+
+### 4.5 File and Module Organization
+Think about dividing components into modules (files) as you construct them. It's possible that you have components/Header.js, components/TodoList.js, and so on that export classes or functions. After that, your main script may import those and put the application together. For instance:
+```text
+// main.js
+import { Header } from './components/Header.js';
+import { TodoList } from './components/TodoList.js';
+
+document.body.appendChild(Header());
+document.body.appendChild(TodoList());
+```
+
+
+Each file remains focused when ES module imports are utilized. You can load imports in a no-build setup by including <script type="module" src="main.js"></script> in your HTML (note: owing to module CORS restrictions, you must serve over HTTP, not file://).
+
+Modules will be used to organize project code and introduce bundling in later chapters. For the time being, be aware that composition occurs not only in code structures but also in the way your codebase is organized.
