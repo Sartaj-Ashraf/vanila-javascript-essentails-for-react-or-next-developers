@@ -417,3 +417,26 @@ Advantages: You group related code together. The class can include all of the lo
 Cons: This binding requires caution and is a little verbose; we used an arrow function for the event, which accurately represents this.
 
 Although we won't utilize classes for every component in the book, it's helpful to be aware of this option, particularly for widgets that have a lot of internal state management.
+
+### 4.3 Templates and HTML Fragments
+Using HTML templates is another method for defining the structure of a component. In HTML, the <template> tag is inert content that can be copied in JavaScript. For instance:
+
+```text
+<template id="itemTemplate">
+  <li class="item">
+    <span class="title"></span>
+    <button class="delete">✕</button>
+  </li>
+</template>
+```
+```
+const template = document.getElementById('itemTemplate');
+function renderItem(item) {
+  const fragment = template.content.cloneNode(true);
+  fragment.querySelector('.title').textContent = item.title;
+  fragment.querySelector('.delete').onclick = () => removeItem(item);
+  return fragment;
+}
+```
+This yields a DocumentFragment with the item's <li> filled in. Some developers prefer that HTML structure and JS functionality be kept apart through the use of templates. It's similar to JSX in that you use HTML to construct the structure and JS to fill in the data.
+Although templates won't be used extensively in our examples (to keep everything in one location), be mindful of this capability for bigger projects or situations where you need to create a lot of static HTML.
