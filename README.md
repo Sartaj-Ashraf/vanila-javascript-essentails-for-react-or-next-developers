@@ -486,3 +486,11 @@ const saveBtn = createButton('Save', () => saveData());
 const cancelBtn = createButton('Cancel', () => cancel());
 ```
 You may add flexibility to your Vanilla components by sending callbacks and other data. By writing them, you may construct a whole toolbar or form from discrete parts.
+
+### 4.7 Summary
+We've explored multiple strategies to compose and reuse UI pieces without React:
+
+-Functions that return DOM (like our createTodoItem).
+-Classes to encapsulate more complex components (CounterComponent).
+-Template-driven rendering.
+-Even Web Components as an advanced option.
