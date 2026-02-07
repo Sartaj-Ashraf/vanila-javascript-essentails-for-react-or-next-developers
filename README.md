@@ -490,7 +490,4 @@ You may add flexibility to your Vanilla components by sending callbacks and othe
 ### 4.7 Summary
 We've explored multiple strategies to compose and reuse UI pieces without React:
 
--Functions that return DOM (like our createTodoItem).
--Classes to encapsulate more complex components (CounterComponent).
--Template-driven rendering.
--Even Web Components as an advanced option.
+Functions that return DOM (like our createTodoItem), Classes to encapsulate more complex components (CounterComponent), Template-driven rendering, Even Web Components as an advanced option.
