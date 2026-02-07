@@ -471,3 +471,18 @@ document.body.appendChild(TodoList());
 Each file remains focused when ES module imports are utilized. You can load imports in a no-build setup by including <script type="module" src="main.js"></script> in your HTML (note: owing to module CORS restrictions, you must serve over HTTP, not file://).
 
 Modules will be used to organize project code and introduce bundling in later chapters. For the time being, be aware that composition occurs not only in code structures but also in the way your codebase is organized.
+
+### 4.6 Parameterization and Reusability
+It is possible to configure a Vanilla JS "component" using parameters. A createButton(text, onClick) function, for example, can produce various buttons as required. This reminds me of React props.
+```text
+function createButton(label, onClick) {
+  const btn = document.createElement('button');
+  btn.textContent = label;
+  if (onClick) btn.addEventListener('click', onClick);
+  return btn;
+}
+// usage
+const saveBtn = createButton('Save', () => saveData());
+const cancelBtn = createButton('Cancel', () => cancel());
+```
+You may add flexibility to your Vanilla components by sending callbacks and other data. By writing them, you may construct a whole toolbar or form from discrete parts.
