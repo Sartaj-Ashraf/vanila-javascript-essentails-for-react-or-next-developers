@@ -515,3 +515,20 @@ window.addEventListener('popstate', (event) => {
 });
 ```
 We'll likely use location.pathname to determine what to show.
+
+# 5.2 Implementing a Simple Router
+Let's sketch a basic router for our Vanilla JS app. Suppose we want three "routes": Home, About, and a dynamic route for a user profile (e.g., /user/123).
+We can create a method called routeTo(path) that calls a render after using pushState:
+```text
+document.addEventListener('click', e => {
+  const link = e.target.closest('a');
+  if (link && link.getAttribute('href').startsWith("/")) {
+    e.preventDefault();
+    routeTo(link.getAttribute('href'));
+  }
+});
+```
+In this case, the functions renderHome, renderAbout, and others return the DOM content for those screens (think of them as our page modules or components). We append the new content after clearing the appRoot, which is presumed to be a container div.
+We also have to deal with link clicks. 
+An <a href="/about">About</a> click would normally cause the entire page to load. Instead, we can call routeTo and intercept clicks:
+Hash-based Routing: As an alternative, you can use the URL hash (location.hash) to track state. example.com/index.html#about, for instance. This eliminates the need for server-side processing of various paths and is more straightforward (the hashchange event is triggered when window.location.hash changes). However, it is often less strong and makes your URLs look a little ugly (# segment). Still, if you can't configure your server to handle SPA routes, hash routing is a fallback. Here, we concentrate on History API routing for the sake of conciseness.
