@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vanilla JS Demo App</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+    .counter { font-size: 48px; margin: 20px 0; }
+    button { font-size: 24px; padding: 10px 20px; margin: 5px; cursor: pointer; }
+    ul { list-style: none; padding: 0; }
+    li { padding: 10px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; }
+    .completed { text-decoration: line-through; opacity: 0.6; }
+    .heart { font-size: 32px; cursor: pointer; margin: 20px 0; }
+    input { padding: 8px; margin-right: 10px; }
+    #root { border: 1px solid #ccc; padding: 20px; }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <h1>Vanilla JS Essentials Demo</h1>
+    
+    <!-- Counter Section: Closures, Classes -->
+    <div id="counter-section">
+      <h2>Counter (Closures & Classes)</h2>
+      <div id="counter-display" class="counter">0</div>
+      <button id="increment">+1</button>
+      <button id="reset">Reset</button>
+    </div>
+
+    <!-- Heart Toggle: Events -->
+    <div id="heart-section">
+      <h2>Heart Toggle (Events)</h2>
+      <span id="heart" class="heart">♡</span>
+    </div>
+
+    <!-- Todo Section: State, Custom Events, LocalStorage, Components -->
+    <div id="todo-section">
+      <h2>Todo App (State Mgmt, Custom Events, Persistence)</h2>
+      <input type="text" id="new-todo" placeholder="Add todo">
+      <button id="add-todo">Add</button>
+      <ul id="todo-list"></ul>
+      <div id="todo-count"></div>
+    </div>
+  </div>
+
+  <script>
+    // Chapter 1: Essential Concepts
+    // 1.1 Closures Example (used in state)
+    
+    // 1.2 Event Loop: All async handled by browser
+    
+    // 1.3 Prototypes: Used in classes below
+    
+    // 1.4 this Binding: Arrow functions preserve
+
+    // Chapter 2: DOM Control
+    const root = document.getElementById('root');
+
+    // 2.1 Element Creation
+    // See dynamic creation below
+
+    // Chapter 3: State Management
+    // 3.1 Global State Store with Closures & Custom Events [web:1][web:3][web:8]
+    const AppState = (() => {
+      let state = {
+        count: 0,
+        todos: [],
+        liked: false
+      };
+      const listeners = [];
+
+      return {
+        getState() { return { ...state }; },
+        setState(updates) {
+          state = { ...state, ...updates };
+          const event = new CustomEvent('stateChange', { detail: state });
+          document.dispatchEvent(event);
+          localStorage.setItem('appState', JSON.stringify(state));
+        },
+        subscribe(fn) {
+          listeners.push(fn);
+          return () => {
+            const index = listeners.indexOf(fn);
+            if (index > -1) listeners.splice(index, 1);
+          };
+        }
+      };
+    })();
+
+    // Load persisted state on init [web:1][web:4]
+    const saved = localStorage.getItem('appState');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      AppState.setState(parsed);
+    }
+
+    // Listen to state changes [web:3]
+    document.addEventListener('stateChange', (e) => {
+      renderCounter(e.detail);
+      renderTodos(e.detail);
+      renderHeart(e.detail);
+    });
+
+    // Chapter 4: Components
+    // 4.1 Functional Components
+    function createTodoItem(todo) {
+      const li = document.createElement('li');
+      li.dataset.id = todo.id;
+      li.className = todo.completed ? 'completed' : '';
+      li.innerHTML = `
+        <span>${todo.text}</span>
+        <div>
+          <button class="toggle">Toggle</button>
+          <button class="delete">Delete</button>
+        </div>
+      `;
+      return li;
+    }
+
+    // 4.2 Class Components
+    class CounterComponent {
+      constructor() {
+        this.el = document.createElement('div');
+        this.display = document.createElement('span');
+        this.display.className = 'counter';
+        this.display.textContent = '0';
+        const incBtn = document.createElement('button');
+        incBtn.textContent = '+1';
+        incBtn.id = 'increment';
+        const resetBtn = document.createElement('button');
+        resetBtn.textContent = 'Reset';
+        resetBtn.id = 'reset';
+        this.el.append(this.display, incBtn, resetBtn);
+      }
+      update(count) {
+        this.display.textContent = count;
+      }
+      mount(parent) {
+        parent.appendChild(this.el);
+      }
+    }
+
+    // Heart Component (Functional)
+    function createHeart() {
+      const heart = document.createElement('span');
+      heart.id = 'heart';
+      heart.className = 'heart';
+      heart.textContent = '♡';
+      return heart;
+    }
+
+    // Renders
+    const counterSection = document.getElementById('counter-section');
+    const counterComp = new CounterComponent();
+    counterComp.mount(counterSection);
+
+    const heartSection = document.getElementById('heart-section');
+    const heart = createHeart();
+    heartSection.appendChild(heart);
+
+    const todoSection = document.getElementById('todo-section');
+    const todoList = document.getElementById('todo-list');
+    const todoCount = document.getElementById('todo-count');
+    const newTodoInput = document.getElementById('new-todo');
+    const addTodoBtn = document.getElementById('add-todo');
+
+    function renderCounter(state) {
+      counterComp.update(state.count);
+    }
+
+    function renderHeart(state) {
+      const heartEl = document.getElementById('heart');
+      heartEl.textContent = state.liked ? '♥' : '♡';
+    }
+
+    function renderTodos(state) {
+      todoList.innerHTML = '';
+      state.todos.forEach(todo => {
+        todoList.appendChild(createTodoItem(todo));
+      });
+      todoCount.textContent = `${state.todos.length} todos`;
+    }
+
+    // Event Delegation [web:5][web:10]
+    todoList.addEventListener('click', (e) => {
+      const li = e.target.closest('li');
+      if (!li) return;
+      const id = li.dataset.id;
+      const todo = AppState.getState().todos.find(t => t.id === id);
+      if (!todo) return;
+
+      if (e.target.classList.contains('toggle')) {
+        const updatedTodos = AppState.getState().todos.map(t =>
+          t.id === id ? { ...t, completed: !t.completed } : t
+        );
+        AppState.setState({ todos: updatedTodos });
+      } else if (e.target.classList.contains('delete')) {
+        const updatedTodos = AppState.getState().todos.filter(t => t.id !== id);
+        AppState.setState({ todos: updatedTodos });
+      }
+    });
+
+    // Input Events
+    addTodoBtn.addEventListener('click', () => {
+      const text = newTodoInput.value.trim();
+      if (!text) return;
+      const newId = Date.now().toString();
+      const newTodo = { id: newId, text, completed: false };
+      const updatedTodos = [...AppState.getState().todos, newTodo];
+      AppState.setState({ todos: updatedTodos });
+      newTodoInput.value = '';
+    });
+
+    newTodoInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') addTodoBtn.click();
+    });
+
+    // Counter Events
+    document.getElementById('increment').addEventListener('click', () => {
+      const current = AppState.getState().count;
+      AppState.setState({ count: current + 1 });
+    });
+
+    document.getElementById('reset').addEventListener('click', () => {
+      AppState.setState({ count: 0 });
+    });
+
+    // Heart Event [web:2][web:3]
+    heart.addEventListener('click', () => {
+      const currentLiked = AppState.getState().liked;
+      AppState.setState({ liked: !currentLiked });
+    });
+
+    // Initial Render
+    renderCounter(AppState.getState());
+    renderTodos(AppState.getState());
+    renderHeart(AppState.getState());
+  </script>
+</body>
+</html>
