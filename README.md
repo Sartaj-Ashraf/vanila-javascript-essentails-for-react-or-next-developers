@@ -491,3 +491,27 @@ You may add flexibility to your Vanilla components by sending callbacks and othe
 We've explored multiple strategies to compose and reuse UI pieces without React:
 
 Functions that return DOM (like our createTodoItem), Classes to encapsulate more complex components (CounterComponent), Template-driven rendering, Even Web Components as an advanced option.
+
+# Chapter 5: Application Navigation on a Single Page
+The majority of contemporary apps are Single-Page Applications (SPAs), which means that even when the user switches between "pages" or views, the user interface is updated without requiring a complete page reload. To deal with this in React, you may utilize React Router. The History API (or the more traditional hash-based method) can be used to accomplish routing in Vanilla JS. The implementation of client-side routing from scratch is covered in this chapter.
+### 5.1 The API for Browser History
+We can change the browser's URL and history stack using the History API without having to restart the page. Important components of the API:
+
+A new item with a new URL is added to the history stack using history.pushState(stateObj, title, url) (the domain must stay the same). (How is the window used?API for history?-GreatFrontEnd.
+The current entry is replaced by history.replaceState(stateObj, title, url).
+When the active history entry changes (for example, when the user clicks Back or Forward, or when you call pushState), the popstate event is triggered on the window.
+We may alter the URL as though navigating by using pushState. For instance:
+```text
+// Navigate to "/about" without reloading
+history.pushState({}, "", "/about");
+```
+As a result, the URL displayed in the address bar will now be /about. The server must handle /about if the user presses enter or refresh at this point (or you need a fallback to index.html). However, we should change the user interface to display the "About" text within our SPA after using pushState.
+
+We are able to respond to back-and-forth navigation by listening to Popstate. For example:
+```text
+window.addEventListener('popstate', (event) => {
+  // event.state contains the stateObj we passed (if any)
+  renderCurrentRoute();
+});
+```
+We'll likely use location.pathname to determine what to show.
