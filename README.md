@@ -599,3 +599,8 @@ When entering, check if you already have the data.
 As an alternative, obtain it via event using the History state object: pushState({ someData }, "", "/path").state within the popstate. This is more complex and frequently unnecessary unless you wish to recover form data or scroll positions on back navigation.
 
 We'll keep things straightforward for our purposes: global state, also known as module-level state, remains active during page navigation.
+
+### 5.5 Including Routing in Our Initiatives
+We might include routing in the development of the movie app or others. In the movie app, for instance, selecting a movie may display details and push a /movie/123 route. To do that, we'll use everything we've learned.
+
+One thing to watch out for is that our SPA code should handle it if the user loads the page directly from /movie/123 (perhaps by identifying the path on load and retrieving the movie details). To guarantee that the SPA can boot up, server-side should ideally deliver the basic page for any route (or redirect to index.html). This is a deployment/config task that is outside the purview of JavaScript.
