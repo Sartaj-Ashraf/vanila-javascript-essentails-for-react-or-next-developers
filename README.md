@@ -558,3 +558,30 @@ document.addEventListener('click', e => {
 
 Hash-based Routing: As an alternative, you can use the URL hash (location.hash) to track state. example.com/index.html#about, for instance. This eliminates the need for server-side processing of various paths and is more straightforward (the hashchange event is triggered when window.location.hash changes). 
 However, it is often less strong and makes your URLs look a little ugly (# segment). Still, if you can't configure your server to handle SPA routes, hash routing is a fallback. Here, we concentrate on History API routing for the sake of conciseness.
+
+### 5.3 Adjustable Paths and Conditions
+You may retrieve IDs or names by parsing location.pathname, as seen using /user/123. You could set up a basic router configuration:
+```
+const routes = [
+  { path: /^\/$/, render: renderHome },
+  { path: /^\/about$/, render: renderAbout },
+  { path: /^\/user\/(\d+)$/, render: (id) => renderUserProfile(id) }
+];
+```
+Then in renderCurrentRoute, find the first route whose regex matches the current path:
+```
+for (let route of routes) {
+  const match = route.path.exec(path);
+  if (match) {
+    const params = match.slice(1); // capture groups as params
+    const page = route.render(...params);
+    appRoot.innerHTML = "";
+    appRoot.appendChild(page);
+    return;
+  }
+}
+// if no match, render 404
+appRoot.innerHTML = "";
+appRoot.appendChild(renderNotFound());
+```
+Our router can manage patterns and pass arguments in this manner. In essence, we are constructing a miniature router. Even in Vanilla JS, you might think about utilizing a small routing module for large apps, but since our objective is to demystify, creating our own is OK.
