@@ -604,3 +604,8 @@ We'll keep things straightforward for our purposes: global state, also known as 
 We might include routing in the development of the movie app or others. In the movie app, for instance, selecting a movie may display details and push a /movie/123 route. To do that, we'll use everything we've learned.
 
 One thing to watch out for is that our SPA code should handle it if the user loads the page directly from /movie/123 (perhaps by identifying the path on load and retrieving the movie details). To guarantee that the SPA can boot up, server-side should ideally deliver the basic page for any route (or redirect to index.html). This is a deployment/config task that is outside the purview of JavaScript.
+
+### 5.5 Including Routing in Our Initiatives
+We might include routing in the development of the movie app or others. In the movie app, for instance, selecting a movie may display details and push a /movie/123 route. To do that, we'll use everything we've learned.
+
+One thing to watch out for is that our SPA code should handle it if the user loads the page directly from /movie/123 (perhaps by identifying the path on load and retrieving the movie details). To guarantee that the SPA can boot up, server-side should ideally deliver the basic page for any route (or redirect to index.html). This is a deployment/config task that is outside the purview of JavaScript.
