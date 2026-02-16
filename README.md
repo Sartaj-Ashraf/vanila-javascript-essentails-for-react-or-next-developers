@@ -585,3 +585,17 @@ appRoot.innerHTML = "";
 appRoot.appendChild(renderNotFound());
 ```
 Our router can manage patterns and pass arguments in this manner. In essence, we are constructing a miniature router. Even in Vanilla JS, you might think about utilizing a small routing module for large apps, but since our objective is to demystify, creating our own is OK.
+
+
+### 5.4 Maintaining Application Status Across Routes
+One challenging aspect is what happens to our state when we "navigate" (pushState) and rebuild the user interface? For instance, do you reload or save a list of items that are loaded on Home after going to About and back?
+
+Since the page is never fully unloaded in an SPA, state can be stored in memory. We still have our appState or other global variables. Whether we replicate or preserve components is up to us.
+
+A straightforward method:
+When leaving a route, you could save some state (maybe in a global or in history state).
+When entering, check if you already have the data.
+
+As an alternative, obtain it via event using the History state object: pushState({ someData }, "", "/path").state within the popstate. This is more complex and frequently unnecessary unless you wish to recover form data or scroll positions on back navigation.
+
+We'll keep things straightforward for our purposes: global state, also known as module-level state, remains active during page navigation.
